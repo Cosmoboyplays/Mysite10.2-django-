@@ -1,0 +1,42 @@
+[
+  {
+    "model": "goods.categories",
+    "pk": 1,
+    "fields": {
+      "name": "Диджериду",
+      "slug": "didzheridu"
+    }
+  },
+  {
+    "model": "goods.categories",
+    "pk": 2,
+    "fields": {
+      "name": "Ханги",
+      "slug": "hangi"
+    }
+  },
+  {
+    "model": "goods.categories",
+    "pk": 3,
+    "fields": {
+      "name": "Гитары",
+      "slug": "gitary"
+    }
+  },
+  {
+    "model": "goods.categories",
+    "pk": 4,
+    "fields": {
+      "name": "Бас-гитары",
+      "slug": "bas-gitary"
+    }
+  },
+  {
+    "model": "goods.categories",
+    "pk": 5,
+    "fields": {
+      "name": "Все товары",
+      "slug": "all"
+    }
+  }
+]

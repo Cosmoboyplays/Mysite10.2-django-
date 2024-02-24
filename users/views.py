@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from users.forms import UserLoginForm, UserRegistrationForm
+from users.forms import UserLoginForm, UserRegistrationForm, ProfileForm
 
 
 def login(request):
@@ -16,6 +16,7 @@ def login(request):
             user = auth.authenticate(username=username, password=password)  # проверяет есть ли в базе
             if user:
                 auth.login(request, user)
+                messages.success(request, f"{request.user.username}, Вы вошли в аккаунт")
                 return HttpResponseRedirect(reverse('main:index'))
     else:
         form = UserLoginForm()
@@ -37,8 +38,9 @@ def registration(request):
             form.save()  # сохраняем в базе
             user = form.instance
             auth.login(request, user)
+            messages.success(request, f"{user.username}, Вы зарегистрированы")
             return HttpResponseRedirect(reverse('main:index'))
-    else:
+    else: 
         form = UserRegistrationForm()
 
     context = {
@@ -48,10 +50,18 @@ def registration(request):
     return render(request, 'registration.html', context)
 
 
+@login_required
 def profile(request):
+    if request.method == "POST":
+        form = ProfileForm(data=request.POST, instance=request.user, files=request.FILES)  # чтобы форма могла принять ф
+        if form.is_valid():
+            form.save()  # сохраняем в базе
+            return HttpResponseRedirect(reverse('user:profile'))
+    else:
+        form = ProfileForm(instance=request.user)
     context = {
         'title': 'Home - Кабинет',
-        # 'form': form,
+        'form': form,
         # 'orders': orders,
     }
     return render(request, 'profile.html', context)

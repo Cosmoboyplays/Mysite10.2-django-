@@ -16,7 +16,10 @@ def catalog(request, category_slug=None):
         goods = Products.objects.all()
     elif query:
         goods = q_search(query)
-
+        '''У  объектов  Product , возвращаемых из функции  q_search , есть дополнительное 
+        свойство  headline , которое содержит текст с выделенными совпадениями по ключевому запросу, а также свойство 
+         bodyline , которое, вероятно, также содержит выделенный текст.
+         '''
     else:
         # ВАЖНО получение slug по внешнему ключу
         goods = get_list_or_404(Products.objects.filter(category__slug=category_slug))

@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from users.forms import UserLoginForm
+from users.forms import UserLoginForm, UserRegistrationForm
 
 
 def login(request):
@@ -13,26 +13,37 @@ def login(request):
         if form.is_valid():
             username = request.POST['username']
             password = request.POST['password']
-            user = auth.authenticate(username=username, password=password)
+            user = auth.authenticate(username=username, password=password)  # проверяет есть ли в базе
             if user:
                 auth.login(request, user)
-                return HttpResponseRedirect(reverse('hub:index'))
+                return HttpResponseRedirect(reverse('main:index'))
     else:
         form = UserLoginForm()
 
     context = {
         'title': 'Home - Авторизация',
-        'form': form,
-        # 'form': form
+        'form': form
     }
     return render(request, 'login.html', context)
 
+# Таким образом, метод non_field_errors появляется после вызова  is_valid() , когда форма содержит ошибки,
+# не связанные с конкретными полями, и позволяет обращаться к этим ошибкам для их обработки.
+
 
 def registration(request):
+    if request.method == "POST":
+        form = UserRegistrationForm(data=request.POST)
+        if form.is_valid():
+            form.save()  # сохраняем в базе
+            user = form.instance
+            auth.login(request, user)
+            return HttpResponseRedirect(reverse('main:index'))
+    else:
+        form = UserRegistrationForm()
 
     context = {
         'title': 'Home - Регистрация',
-        # 'form': form
+        'form': form
     }
     return render(request, 'registration.html', context)
 
@@ -46,12 +57,13 @@ def profile(request):
     return render(request, 'profile.html', context)
 
 
-# def users_cart(request):
-#     return render(request, 'users/users_cart.html')
-#
-
 @login_required
 def logout(request):
     messages.success(request, f"{request.user.username}, Вы вышли из аккаунта")
     auth.logout(request)
     return redirect(reverse('main:index'))
+
+
+# def users_cart(request):
+#     return render(request, 'users/users_cart.html')
+#

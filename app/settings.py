@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'main',
     'goods',
     'users',
+    'carts'
 
 ]
 
@@ -145,6 +146,7 @@ INTERNAL_IPS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'  # при переопределении джанговской таблицы
+LOGIN_URL = '/user/login/'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'

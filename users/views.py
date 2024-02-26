@@ -40,7 +40,7 @@ def registration(request):
             auth.login(request, user)
             messages.success(request, f"{user.username}, Вы зарегистрированы")
             return HttpResponseRedirect(reverse('main:index'))
-    else: 
+    else:
         form = UserRegistrationForm()
 
     context = {
@@ -74,6 +74,6 @@ def logout(request):
     return redirect(reverse('main:index'))
 
 
-# def users_cart(request):
-#     return render(request, 'users/users_cart.html')
-#
+def users_cart(request):
+    return render(request, 'users_cart.html')
+

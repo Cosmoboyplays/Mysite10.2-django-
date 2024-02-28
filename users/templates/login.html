@@ -14,6 +14,10 @@
 
                 <form  action="{% url 'user:login' %}" method="post">
                     {% csrf_token %}
+<!--                    параметр next будет если на эту страницу мы попадем через декоратор login_required-->
+                    {% if request.GET.next %}
+                        <input type="hidden" name="next" value={{request.GET.next}}>
+                    {% endif %}
                     <div class="mb-3">
                         <label for="id_username" class="form-label">Имя пользователя</label>
                         <input type="text" class="form-control"

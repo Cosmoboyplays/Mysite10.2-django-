@@ -24,7 +24,6 @@ def cart_add(request):
         else:
             Cart.objects.create(user=request.user, product=product, quantity=1)
 
-
     else:
         carts = Cart.objects.filter(
             session_key=request.session.session_key, product=product)
